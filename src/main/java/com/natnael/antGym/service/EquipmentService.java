@@ -2,6 +2,7 @@ package com.natnael.antGym.service;
 
 import com.natnael.antGym.dao.EquipmentDao;
 import com.natnael.antGym.model.Equipment;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,30 @@ public class EquipmentService {
 
     public Optional<Equipment> getEquipmentById(Long id) {
         return this.dao.findById(id);
+    }
+
+    public boolean deleteEquipmentById(Long id){
+        boolean exist = dao.existsById(id);
+        if (exist){
+            dao.deleteById(id);
+        }
+        return exist;
+    }
+
+    // @Transactional makes the updates permanent
+    @Transactional
+    public Equipment updateEquipmentById(Long id, Equipment item){
+        Optional<Equipment> optional=getEquipmentById(id);
+        Equipment existing = null;
+        // check if the value is present
+        if (optional.isPresent()){
+            // get the value
+            existing = optional.get();
+            // update the fields
+            existing.setName(item.getName());
+            existing.setDescription(item.getDescription());
+            existing.setPrice(item.getPrice());
+        }
+        return existing;
     }
 }

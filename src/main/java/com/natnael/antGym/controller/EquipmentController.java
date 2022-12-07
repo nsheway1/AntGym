@@ -33,4 +33,10 @@ public class EquipmentController {
     public Equipment saveEquipment(@RequestBody Equipment item) {
         return service.addEquipment(item);
     }
+
+    @DeleteMapping("/equipment/{id}")
+    public boolean deleteEquipmentById(@PathVariable Long id) {return  service.deleteEquipmentById(id);}
+
+    @PutMapping("/equipment/{id}")
+    public Equipment updateEquipmentById(@PathVariable Long id, @RequestBody Equipment item) {return service.updateEquipmentById(id,item);}
 }
